@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        {% block stylesheets %}{% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        <a href="{{ path('categorie_index') }}">Catégories</a>
+        <a href="{{ path('produit_index') }}">Produits</a>
+        <a href="{{ path('utilisateur_index') }}">Utils</a>
+        <a href="{{ path('symptome_index') }}">Symptomes</a>
+        <a href="{{ path('recette_index') }}">Recettes</a>
+        <br>
+        <a href="{{ path('ajout_recette') }}">Proposer une recette</a>
+        {% block body %}{% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

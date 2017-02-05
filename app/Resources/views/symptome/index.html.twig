@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Symptomes list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for symptome in symptomes %}
+            <tr>
+                <td><a href="{{ path('symptome_show', { 'id': symptome.id }) }}">{{ symptome.id }}</a></td>
+                <td>{{ symptome.nom }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('symptome_show', { 'id': symptome.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('symptome_edit', { 'id': symptome.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('symptome_new') }}">Create a new symptome</a>
+        </li>
+    </ul>
+{% endblock %}
