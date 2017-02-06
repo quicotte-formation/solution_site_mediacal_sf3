@@ -1,0 +1,12 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}AppBundle:Filtre:filtre{% endblock %}
+
+{% block body %}
+    <h1>Filtre recettes</h1>
+    {{ form(monForm) }}
+    <h1>Résultats</h1>
+    {% for recette in recettes %}
+        {{ recette }}<br>
+    {% endfor %}
+{% endblock %}
