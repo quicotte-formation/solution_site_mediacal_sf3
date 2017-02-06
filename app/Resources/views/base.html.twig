@@ -7,13 +7,21 @@
         <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
     </head>
     <body>
-        <a href="{{ path('categorie_index') }}">Catégories</a>
-        <a href="{{ path('produit_index') }}">Produits</a>
-        <a href="{{ path('utilisateur_index') }}">Utils</a>
-        <a href="{{ path('symptome_index') }}">Symptomes</a>
-        <a href="{{ path('recette_index') }}">Recettes</a>
+        {% if app.session.get("utilConnecte") %}
+            Bienvenue: {{ app.session.get("utilConnecte").login }}
+            <a href="{{ path('logout') }}">Déconnexion</a>
+            <a href="{{ path('categorie_index') }}">Catégories</a>
+            <a href="{{ path('produit_index') }}">Produits</a>
+            <a href="{{ path('utilisateur_index') }}">Utils</a>
+            <a href="{{ path('symptome_index') }}">Symptomes</a>
+            <a href="{{ path('recette_index') }}">Recettes</a>
+            &nbsp;&nbsp;&nbsp;
+            <a href="{{ path('ajout_recette') }}">Proposer une recette</a>
+        {% else %}
+            <a href="{{ path('inscription') }}">Inscription</a>
+            <a href="{{ path('login') }}">Connexion</a>
+        {% endif %}
         <br>
-        <a href="{{ path('ajout_recette') }}">Proposer une recette</a>
         {% block body %}{% endblock %}
         {% block javascripts %}{% endblock %}
     </body>

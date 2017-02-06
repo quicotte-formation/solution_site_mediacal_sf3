@@ -3,12 +3,16 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\Callback;
 
 /**
  * Recette
  *
  * @ORM\Table(name="recette")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RecetteRepository")
+ * 
  */
 class Recette
 {
@@ -22,8 +26,15 @@ class Recette
     private $id;
 
     /**
+     * @ORM\ManyToOne(targetEntity="Utilisateur", inversedBy="recettes")
+     * @ORM\JoinColumn(name="utilisateur_id")
+     */
+    private $utilisateur;
+    
+    /**
      * @var string
      *
+     * @NotBlank(message="Remplissez ce champ!")
      * @ORM\Column(name="nom", type="string", length=255)
      */
     private $nom;
@@ -38,6 +49,8 @@ class Recette
     /**
      * @var string
      *
+     * @NotBlank(message="Remplissez ce champ!")
+     * @Length(min=10, minMessage="Mini 10 caractères")
      * @ORM\Column(name="description", type="string", length=255)
      */
     private $description;
@@ -75,6 +88,23 @@ class Recette
      */
     private $symptomes;
 
+    
+    /**
+     * @Callback
+     * @param \Symfony\Component\Validator\Context\ExecutionContextInterface $context
+     * @param type $payload
+     */
+    public function callbackNomEtDescDifferents(
+            \Symfony\Component\Validator\Context\ExecutionContextInterface $context, 
+            $payload){
+        
+        if( strcmp( $this->nom, $this->description)==0 )
+                $context->buildViolation 
+                        ("Le nom et desc doivent être différents")
+                        ->addViolation ();
+                
+    }
+    
 
     /**
      * Get id
@@ -321,5 +351,29 @@ class Recette
     
     public function __toString() {
         return $this->nom;
+    }
+
+    /**
+     * Set utilisateur
+     *
+     * @param \AppBundle\Entity\Utilisateur $utilisateur
+     *
+     * @return Recette
+     */
+    public function setUtilisateur(\AppBundle\Entity\Utilisateur $utilisateur = null)
+    {
+        $this->utilisateur = $utilisateur;
+
+        return $this;
+    }
+
+    /**
+     * Get utilisateur
+     *
+     * @return \AppBundle\Entity\Utilisateur
+     */
+    public function getUtilisateur()
+    {
+        return $this->utilisateur;
     }
 }

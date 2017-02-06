@@ -28,6 +28,13 @@ class FrontRecetteController extends Controller
             $dto->setPosologie("***");
             // Persistance
             $em = $this->getDoctrine()->getManager();
+            
+            // Associe util connecte et recette
+            $util = $req->getSession()->get("utilConnecte");
+            $util = $em->find("AppBundle:Utilisateur", $util->getId());
+            $dto->setUtilisateur( $util );
+            $util->addRecette( $dto );
+            
             $em->persist( $dto );
             $em->flush();
             

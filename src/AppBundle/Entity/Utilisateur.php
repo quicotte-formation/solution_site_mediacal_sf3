@@ -3,6 +3,8 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Choice;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 /**
  * User
@@ -21,6 +23,11 @@ class Utilisateur
      */
     private $id;
 
+    /**
+     * @ORM\OneToMany(targetEntity="Recette", mappedBy="utilisateur")
+     */
+    private $recettes;
+    
     /**
      * @var string
      *
@@ -59,7 +66,9 @@ class Utilisateur
     /**
      * @var string
      *
+     * @Choice(choices={"ADMIN", "NORMAL"}, message="ADMIN ou NORMAL")
      * @ORM\Column(name="Type", type="string", length=255)
+     * @NotBlank
      */
     private $type;
 
@@ -220,5 +229,46 @@ class Utilisateur
     
     public function __toString() {
         return $this->login;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->recettes = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add recette
+     *
+     * @param \AppBundle\Entity\Recette $recette
+     *
+     * @return Utilisateur
+     */
+    public function addRecette(\AppBundle\Entity\Recette $recette)
+    {
+        $this->recettes[] = $recette;
+
+        return $this;
+    }
+
+    /**
+     * Remove recette
+     *
+     * @param \AppBundle\Entity\Recette $recette
+     */
+    public function removeRecette(\AppBundle\Entity\Recette $recette)
+    {
+        $this->recettes->removeElement($recette);
+    }
+
+    /**
+     * Get recettes
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRecettes()
+    {
+        return $this->recettes;
     }
 }
