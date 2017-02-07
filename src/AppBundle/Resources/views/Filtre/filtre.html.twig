@@ -6,6 +6,13 @@
     <h1>Filtre recettes</h1>
     {{ form(monForm) }}
     <h1>Résultats</h1>
+    <div>
+        {% if nbPages>1 %}
+            {% for indicePage in 0..nbPages-1 %}
+                <a href="{{ path("filtre", {page: indicePage}) }}">Page {{ indicePage + 1 }}</a>
+            {% endfor %}
+        {% endif %}
+    </div>
     {% for recette in recettes %}
         {{ recette }}<br>
     {% endfor %}

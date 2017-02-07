@@ -8,9 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 class FiltreController extends Controller
 {
     /**
-     * @Route("/filtre")
+     * @Route("/filtre/{page}", name="filtre")
      */
-    public function filtreAction(\Symfony\Component\HttpFoundation\Request $req)
+    public function filtreAction($page=0, \Symfony\Component\HttpFoundation\Request $req)
     {
         $dto = new \AppBundle\DTO\FiltreDTO();
         $form = $this->createForm(\AppBundle\Form\FiltreType::class, $dto);
@@ -38,10 +38,15 @@ class FiltreController extends Controller
         // Exécute requete
         $recettes = $qb->getQuery()->getResult();
         
+        // Calcule nb résultats
+        $nbPages = (int) (sizeof( $recettes ) / 2);// OU count
+        
         return $this->render('AppBundle:Filtre:filtre.html.twig', array(
             
             "monForm"=>$form->createView(),
-            "recettes"=>$recettes
+            "recettes"=>$recettes,
+            "nbPages"=>$nbPages,
+            "pageAct"=>$page
         ));
     }
 
